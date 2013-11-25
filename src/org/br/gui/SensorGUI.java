@@ -12,36 +12,47 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-public class ServiceGUI extends JFrame {
+import org.br.util.Util;
 
-	private static final long serialVersionUID = 3546817905244895446L;
+public class SensorGUI extends JFrame {
 
-	private JLabel clientsLabel;
+	private static final long serialVersionUID = 4728590686582858618L;
+
+	private JLabel valueLabel;
 	private JButton shutDownButton;
 	private Container container;
 	private JPanel panel;
 
-	public ServiceGUI() {
+	private String name;
+	private String tag;
+
+	public SensorGUI(String name, String tag) {
 		super("sensors_reading_DS");
+
+		this.name = name;
+		this.tag = tag;
+
 		initComponents();
 	}
 
-	public void setclientLabelText(String value) {
+	public void setValueLabel(String value) {
 
-		this.clientsLabel.setText(value);
+		final String measurementUnit = Util.getMeasurementUnit(tag);
+
+		this.valueLabel.setText(value + measurementUnit);
 	}
 
 	private void initComponents() {
 
 		panel = new JPanel();
-		panel.setBorder(BorderFactory.createTitledBorder("Service"));
+		panel.setBorder(BorderFactory.createTitledBorder("Sensor - " + name));
 
 		shutDownButton = new JButton("Shut Down");
-		clientsLabel = new JLabel("0");
+		valueLabel = new JLabel("0");
 		container = new Container();
 		container.setLayout(new GridLayout(0, 2));
-		container.add(new JLabel("Clients:"));
-		container.add(clientsLabel);
+		container.add(new JLabel("Value (" + tag + "):"));
+		container.add(valueLabel);
 		container.add(new JLabel(""));
 		container.add(new JLabel(""));
 		container.add(shutDownButton);

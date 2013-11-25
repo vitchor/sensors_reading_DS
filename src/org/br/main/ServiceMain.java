@@ -11,9 +11,6 @@ import org.omg.PortableServer.POAHelper;
 
 public class ServiceMain {
 
-	public static String ROOT_POA = "RootPOA";
-	public static String NAME_SERVICE = "NameService";
-
 	public static void main(String args[]) {
 		try {
 
@@ -24,12 +21,12 @@ public class ServiceMain {
 
 			// Get a reference from rootpoa & Activate the POAManager
 			POA rootpoa = POAHelper.narrow(orb
-					.resolve_initial_references(ROOT_POA));
+					.resolve_initial_references(Names.ROOT_POA));
 			rootpoa.the_POAManager().activate();
 
 			// get the root naming context
 			org.omg.CORBA.Object objRef = orb
-					.resolve_initial_references(NAME_SERVICE);
+					.resolve_initial_references(Names.NAME_SERVICE);
 			NamingContext namingContext = NamingContextHelper.narrow(objRef);
 
 			// Create instance of a Service Servant
