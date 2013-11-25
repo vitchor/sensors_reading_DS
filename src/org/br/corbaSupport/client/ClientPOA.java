@@ -8,13 +8,15 @@ package org.br.corbaSupport.client;
 * Monday, November 25, 2013 2:05:22 PM BRST
 */
 
+@SuppressWarnings("unchecked")
 public abstract class ClientPOA extends org.omg.PortableServer.Servant
  implements ClientOperations, org.omg.CORBA.portable.InvokeHandler
 {
 
   // Constructors
 
-  private static java.util.Hashtable _methods = new java.util.Hashtable ();
+  @SuppressWarnings("rawtypes")
+private static java.util.Hashtable _methods = new java.util.Hashtable ();
   static
   {
     _methods.put ("updateTagValues", new java.lang.Integer (0));

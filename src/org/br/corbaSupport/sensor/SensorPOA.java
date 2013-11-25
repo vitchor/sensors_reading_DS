@@ -14,7 +14,8 @@ public abstract class SensorPOA extends org.omg.PortableServer.Servant
 
   // Constructors
 
-  private static java.util.Hashtable _methods = new java.util.Hashtable ();
+  @SuppressWarnings("rawtypes")
+private static java.util.Hashtable _methods = new java.util.Hashtable ();
   static
   {
   }

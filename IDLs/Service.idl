@@ -1,4 +1,4 @@
 interface Service{
 	long updateSensorValues(in string sensor_name, in string tag_name, in string tag_values);
-	long registerClient(in string client_name);
+	long registerClient(in string client_name, in string first_tag, in string second_tag);
 };
