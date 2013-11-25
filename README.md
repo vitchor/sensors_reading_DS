@@ -5,7 +5,7 @@ Java system that integrates sensors and clients displays in a distributed enviro
 
 ##Compiling CORBA idls
 
-    $ idlj <file_name>.idl
+    $ idlj -fall <file_name>.idl
 
 ##Running the project
 
