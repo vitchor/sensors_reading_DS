@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.br.corbaSupport.client.ClientPOA;
 import org.br.gui.ClientGUI;
+import org.omg.CORBA.Any;
 
 public class ClientServant extends ClientPOA {
 
@@ -12,10 +13,8 @@ public class ClientServant extends ClientPOA {
 	private String firstTag;
 	private String secondTag;
 
-	private ArrayList<String> firstTagArrayList;
-	private ArrayList<String> secondTagArrayList;
-
-	private ClientGUI gui;
+	private ClientGUI firstGUI;
+	private ClientGUI secondGUI;
 
 	public ClientServant(String name, String firstTag, String secondTag) {
 		super();
@@ -23,25 +22,31 @@ public class ClientServant extends ClientPOA {
 		this.firstTag = firstTag;
 		this.secondTag = secondTag;
 
-		gui = new ClientGUI();
-		gui.setVisible(true);
+		firstGUI = new ClientGUI();
+		firstGUI.setVisible(true);
+		
+		secondGUI = new ClientGUI();
+		secondGUI.setVisible(true);
 
-		firstTagArrayList = new ArrayList<String>();
-		secondTagArrayList = new ArrayList<String>();
 	}
 
 	@Override
-	public synchronized int updateTagValues(String tag_name, String tag_values) {
+	public synchronized int updateTagValues(String tag_name, Any tag_values) {
 
+		@SuppressWarnings("unchecked")
+		ArrayList<String> tagValues = (ArrayList<String>) tag_values
+				.extract_Value();
+
+		System.out.println(tagValues.size());
+		
 		if (tag_name.equals(firstTag)) {
-			firstTagArrayList.add(tag_values);
-			gui.updateModel(firstTagArrayList);
+			firstGUI.updateModel(tagValues);
 
 		} else if (tag_name.equals(secondTag)) {
-			secondTagArrayList.add(tag_values);
-			gui.updateModel(secondTagArrayList);
+			secondGUI.updateModel(tagValues);
 		}
 
 		return 0;
 	}
+
 }

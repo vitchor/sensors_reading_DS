@@ -20,13 +20,15 @@ public class SensorReader implements Runnable {
 	}
 
 	@Override
-	public void run() {
+	public synchronized void run() {
 		int index = 0;
 		String tag_values = ")";
 		
 		while (true) {
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(1000);		
+
+				
 
 				final String tag_value = Reader.readSensorFile(tag, index);
 

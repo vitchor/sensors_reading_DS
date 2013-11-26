@@ -6,6 +6,7 @@ import org.br.corbaSupport.service.ServicePOA;
 import org.br.gui.ServiceGUI;
 import org.br.thread.ClientUpdater;
 import org.br.util.Util;
+import org.omg.CORBA.ORB;
 import org.omg.CosNaming.NameComponent;
 import org.omg.CosNaming.NamingContext;
 
@@ -16,12 +17,12 @@ public class ServiceServant extends ServicePOA {
 	private NamingContext namingContext;
 	private ClientUpdater clientUpdater;
 
-	public ServiceServant(NamingContext namingContext) {
+	public ServiceServant(NamingContext namingContext, ORB orb) {
 		super();
 
 		this.namingContext = namingContext;
 
-		clientUpdater = new ClientUpdater();
+		clientUpdater = new ClientUpdater(orb);
 
 		try {
 			final Thread clientUpdaterThread = new Thread(clientUpdater);
@@ -61,7 +62,7 @@ public class ServiceServant extends ServicePOA {
 	}
 
 	@Override
-	public int registerClient(String client_name, String first_tag,
+	public synchronized int registerClient(String client_name, String first_tag,
 			String second_tag) {
 		try {
 
@@ -94,7 +95,7 @@ public class ServiceServant extends ServicePOA {
 		final String measurementUnit = Util.getMeasurementUnit(tag);
 		final String timeString = Util.getTimestamp();
 
-		return "<" + sensorName + "> - " + tagValues + measurementUnit + " - ["
-				+ timeString + "]";
+		return "["
+				+ timeString + "] - <" + sensorName + ">   " + tagValues + measurementUnit ;
 	}
 }
