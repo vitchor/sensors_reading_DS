@@ -16,29 +16,27 @@ import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 
-
-public class ClientSwingGUI extends JFrame {
+public class ClientGUI extends JFrame {
 
 	private static final long serialVersionUID = 8560706222926619704L;
 	DefaultListModel model = new DefaultListModel();
 
-	public ClientSwingGUI() {
+	public ClientGUI() {
 		initComponents();
 	}
 
-	public void updateModel(ArrayList<String> model) {
+	public synchronized void updateModel(ArrayList<String> model) {
 		this.model.clear();
 
 		int index = 0;
+
 		for (String string : model) {
 
 			model.add(index, string);
 			index = index + 1;
 		}
-
 	}
 
 	private void initComponents() {
@@ -121,8 +119,8 @@ public class ClientSwingGUI extends JFrame {
 	private JScrollPane scrollPane1;
 	private JList list1;
 	// JFormDesigner - End of variables declaration //GEN-END:variables
-	private int m_interval = 2000; // Milliseconds between updates.
-	private Timer m_timer; // Timer fires to anmimate one step.
+	// private int m_interval = 2000; // Milliseconds between updates.
+	// private Timer m_timer; // Timer fires to anmimate one step.
 
 	// class TimerAction implements ActionListener {
 	//

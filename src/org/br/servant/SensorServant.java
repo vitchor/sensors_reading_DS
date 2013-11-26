@@ -41,21 +41,25 @@ public class SensorServant extends SensorPOA {
 		public void run() {
 
 			final String tag_value = Reader.readSensorFile(tag, index);
-			
+
 			if (tag_values.equals(")")) {
 				tag_values = tag_value + tag_values;
 			} else {
 				tag_values = tag_value + ", " + tag_values;
 			}
-			
 
 			sensorGUI.setValueLabel(tag_value);
-			
+
 			index = index + 1;
 
 			if (index % 5 == 0) {
 				tag_values = "(" + tag_values;
-				service.updateSensorValues(name, tag, tag_values);
+
+				synchronized (tag_value) {
+					service.updateSensorValues(name, tag, tag_values);
+
+				}
+
 				tag_values = ")";
 			}
 		}

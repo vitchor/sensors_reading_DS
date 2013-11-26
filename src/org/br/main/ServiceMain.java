@@ -30,7 +30,7 @@ public class ServiceMain {
 			NamingContext namingContext = NamingContextHelper.narrow(objRef);
 
 			// Create instance of a Service Servant
-			ServiceServant serviceServant = new ServiceServant();
+			ServiceServant serviceServant = new ServiceServant(namingContext);
 
 			// Register it with the ORB and get the reference to servant
 			org.omg.CORBA.Object serviceServantCORBA = rootpoa

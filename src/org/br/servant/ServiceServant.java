@@ -25,9 +25,11 @@ public class ServiceServant extends ServicePOA {
 	private ArrayList<Client> pressureClients;
 	private ArrayList<Client> humidityClients;
 
-	public ServiceServant() {
+	public ServiceServant(NamingContext namingContext) {
 		super();
 
+		this.namingContext = namingContext;
+		
 		temperatureBuffer = new Buffer();
 		pressureBuffer = new Buffer();
 		humidityBuffer = new Buffer();
@@ -41,7 +43,7 @@ public class ServiceServant extends ServicePOA {
 	}
 
 	@Override
-	public int updateSensorValues(String sensorName, String tag,
+	public synchronized int updateSensorValues(String sensorName, String tag,
 			String tagValues) {
 
 		final String valueFinalFormat = createPersistentValue(tag, sensorName,
@@ -104,7 +106,7 @@ public class ServiceServant extends ServicePOA {
 				+ timeString + "]";
 	}
 
-	private void sendValueToClientArray(String tagValue,
+	private synchronized void sendValueToClientArray(String tagValue,
 			ArrayList<Client> arrayList, String tag) {
 
 		for (Client client : arrayList) {
