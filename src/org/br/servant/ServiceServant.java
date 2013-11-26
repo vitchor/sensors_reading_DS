@@ -1,12 +1,10 @@
 package org.br.servant;
 
-import java.util.ArrayList;
-
 import org.br.corbaSupport.client.Client;
 import org.br.corbaSupport.client.ClientHelper;
 import org.br.corbaSupport.service.ServicePOA;
 import org.br.gui.ServiceGUI;
-import org.br.util.Buffer;
+import org.br.thread.ClientUpdater;
 import org.br.util.Util;
 import org.omg.CosNaming.NameComponent;
 import org.omg.CosNaming.NamingContext;
@@ -16,50 +14,42 @@ public class ServiceServant extends ServicePOA {
 	private ServiceGUI serviceGUI;
 
 	private NamingContext namingContext;
-
-	private Buffer temperatureBuffer;
-	private Buffer pressureBuffer;
-	private Buffer humidityBuffer;
-
-	private ArrayList<Client> temperatureClients;
-	private ArrayList<Client> pressureClients;
-	private ArrayList<Client> humidityClients;
+	private ClientUpdater clientUpdater;
 
 	public ServiceServant(NamingContext namingContext) {
 		super();
 
 		this.namingContext = namingContext;
-		
-		temperatureBuffer = new Buffer();
-		pressureBuffer = new Buffer();
-		humidityBuffer = new Buffer();
 
-		temperatureClients = new ArrayList<Client>();
-		pressureClients = new ArrayList<Client>();
-		humidityClients = new ArrayList<Client>();
+		clientUpdater = new ClientUpdater();
+
+		try {
+			final Thread clientUpdaterThread = new Thread(clientUpdater);
+			clientUpdaterThread.start();
+			//clientUpdaterThread.join();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 
 		this.serviceGUI = new ServiceGUI();
 		this.serviceGUI.setVisible(true);
 	}
 
 	@Override
-	public synchronized int updateSensorValues(String sensorName, String tag,
+	public int updateSensorValues(String sensorName, String tag,
 			String tagValues) {
 
 		final String valueFinalFormat = createPersistentValue(tag, sensorName,
 				tagValues);
 
 		if (tag.equals("T")) {
-			temperatureBuffer.append(valueFinalFormat);
-			sendValueToClientArray(valueFinalFormat, temperatureClients, tag);
+			clientUpdater.appendTemperature(valueFinalFormat);
 
 		} else if (tag.equals("P")) {
-			pressureBuffer.append(valueFinalFormat);
-			sendValueToClientArray(valueFinalFormat, pressureClients, tag);
+			clientUpdater.appendPressure(valueFinalFormat);
 
 		} else if (tag.equals("H")) {
-			humidityBuffer.append(valueFinalFormat);
-			sendValueToClientArray(valueFinalFormat, humidityClients, tag);
+			clientUpdater.appendHumidity(valueFinalFormat);
 
 		} else {
 			return 0;
@@ -81,13 +71,15 @@ public class ServiceServant extends ServicePOA {
 					.resolve(clientName));
 
 			if (first_tag.equals("T") || second_tag.equals("T")) {
-				temperatureClients.add(client);
+				clientUpdater.appendTemperatureClient(client);
+
 			}
 			if (first_tag.equals("P") || second_tag.equals("P")) {
-				pressureClients.add(client);
+				clientUpdater.appendPressureClient(client);
+
 			}
 			if (first_tag.equals("H") || second_tag.equals("H")) {
-				humidityClients.add(client);
+				clientUpdater.appendHumidityClient(client);
 			}
 
 		} catch (Exception e) {
@@ -104,13 +96,5 @@ public class ServiceServant extends ServicePOA {
 
 		return "<" + sensorName + "> - " + tagValues + measurementUnit + " - ["
 				+ timeString + "]";
-	}
-
-	private synchronized void sendValueToClientArray(String tagValue,
-			ArrayList<Client> arrayList, String tag) {
-
-		for (Client client : arrayList) {
-			client.updateTagValues(tag, tagValue);
-		}
 	}
 }

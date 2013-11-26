@@ -7,7 +7,7 @@ import org.br.gui.ClientGUI;
 
 public class ClientServant extends ClientPOA {
 
-	private String name;
+	String name;
 
 	private String firstTag;
 	private String secondTag;

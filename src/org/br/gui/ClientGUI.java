@@ -9,6 +9,8 @@ import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
@@ -16,33 +18,44 @@ import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 
 public class ClientGUI extends JFrame {
 
 	private static final long serialVersionUID = 8560706222926619704L;
 	DefaultListModel model = new DefaultListModel();
+	Timer m_timer;
+	int m_interval = 50;
+
+	ArrayList<String> valueArray;
 
 	public ClientGUI() {
+
+		valueArray = new ArrayList<String>();
+
 		initComponents();
 	}
 
+//	public synchronized void updateModel(ArrayList<String> model) {
+//
+//		this.model.clear();
+//
+//		int index = 0;
+//
+//		for (String string : model) {
+//			model.add(index, string);
+//			index = index + 1;
+//		}
+//	}
+	
 	public synchronized void updateModel(ArrayList<String> model) {
-		this.model.clear();
-
-		int index = 0;
-
-		for (String string : model) {
-
-			model.add(index, string);
-			index = index + 1;
-		}
+		valueArray = (ArrayList<String>) model.clone();
+		//SerializationUtils.clone(model);
+		//valueArray = model;
 	}
 
 	private void initComponents() {
-		// JFormDesigner - Component initialization - DO NOT MODIFY
-		// //GEN-BEGIN:initComponents
-		// Generated using JFormDesigner Evaluation license - victor asdasd
 		dialogPane = new JPanel();
 		contentPanel = new JPanel();
 		scrollPane1 = new JScrollPane();
@@ -61,7 +74,7 @@ public class ClientGUI extends JFrame {
 					.setBorder(new javax.swing.border.CompoundBorder(
 							new javax.swing.border.TitledBorder(
 									new javax.swing.border.EmptyBorder(0, 0, 0,
-											0), "JFormDesigner Evaluation",
+											0), " ",
 									javax.swing.border.TitledBorder.CENTER,
 									javax.swing.border.TitledBorder.BOTTOM,
 									new java.awt.Font("Dialog",
@@ -103,51 +116,29 @@ public class ClientGUI extends JFrame {
 		contentPane.add(dialogPane, BorderLayout.CENTER);
 		pack();
 		setLocationRelativeTo(getOwner());
-		// JFormDesigner - End of component initialization
-		// //GEN-END:initComponents
 
-		// m_timer = new Timer(m_interval, new TimerAction());
-		// m_timer.start();
-
+		m_timer = new Timer(m_interval, new TimerAction());
+		m_timer.start();
 	}
 
-	// JFormDesigner - Variables declaration - DO NOT MODIFY
-	// //GEN-BEGIN:variables
-	// Generated using JFormDesigner Evaluation license - victor asdasd
 	private JPanel dialogPane;
 	private JPanel contentPanel;
 	private JScrollPane scrollPane1;
 	private JList list1;
-	// JFormDesigner - End of variables declaration //GEN-END:variables
-	// private int m_interval = 2000; // Milliseconds between updates.
-	// private Timer m_timer; // Timer fires to anmimate one step.
 
-	// class TimerAction implements ActionListener {
-	//
-	// // ================================================== actionPerformed
-	// public void actionPerformed(ActionEvent e) {
-	// //URLReader cardapioGetter = new URLReader();
-	// String cardapio = cardapioGetter.getCardapio();
-	// char[] letras = cardapio.toCharArray();
-	// String linhas[] = {};
-	// int listIndex = 0;
-	// int listDataIndex = 0;
-	// int lastCharIndex=-1;
-	// String linha;
-	// model.clear();
-	// for(int i =0;i<letras.length;i++ ){
-	// if (letras[i]=='%'){
-	// linha="";
-	// for(int i2 = lastCharIndex+1;i2<i;i2++){
-	// linha = linha + letras[i2];
-	// }
-	// lastCharIndex=i;
-	// model.add(listIndex,linha);
-	// listIndex++;
-	// }
-	// }
-	//
-	// }
-	//
-	// }
+	class TimerAction implements ActionListener {
+
+		// ================================================== actionPerformed
+		public void actionPerformed(ActionEvent e) {
+
+			model.clear();
+
+			int index = 0;
+
+			for (String string : valueArray) {
+				model.add(index, string);
+				index = index + 1;
+			}
+		}
+	}
 }

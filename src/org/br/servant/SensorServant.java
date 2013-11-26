@@ -1,19 +1,15 @@
 package org.br.servant;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 import org.br.corbaSupport.sensor.SensorPOA;
 import org.br.corbaSupport.service.Service;
 import org.br.gui.SensorGUI;
-import org.br.util.Reader;
+import org.br.thread.SensorReader;
 
 public class SensorServant extends SensorPOA {
 
 	private Service service;
 	private String name;
 	private String tag;
-	private Timer timer;
 	private SensorGUI sensorGUI;
 
 	public SensorServant(String name, String tag, Service service) {
@@ -26,42 +22,19 @@ public class SensorServant extends SensorPOA {
 		sensorGUI = new SensorGUI(name, tag);
 		sensorGUI.setVisible(true);
 
-		timer = new Timer();
+		final SensorReader sensorReader = new SensorReader(this.name, this.tag,
+				this.sensorGUI, this.service);
 
-		timer.scheduleAtFixedRate(new UpdateValues(), 0, 1000);
-	}
+		final Thread sensorReaderThread = new Thread(sensorReader);
 
-	class UpdateValues extends TimerTask {
+		sensorReaderThread.start();
 
-		int index = 0;
-
-		String tag_values = ")";
-
-		@Override
-		public void run() {
-
-			final String tag_value = Reader.readSensorFile(tag, index);
-
-			if (tag_values.equals(")")) {
-				tag_values = tag_value + tag_values;
-			} else {
-				tag_values = tag_value + ", " + tag_values;
-			}
-
-			sensorGUI.setValueLabel(tag_value);
-
-			index = index + 1;
-
-			if (index % 5 == 0) {
-				tag_values = "(" + tag_values;
-
-				synchronized (tag_value) {
-					service.updateSensorValues(name, tag, tag_values);
-
-				}
-
-				tag_values = ")";
-			}
-		}
+//		try {
+//			sensorReaderThread.join();
+//
+//		} catch (InterruptedException e) {
+//			System.out.println("Falhou no join!");
+//			e.printStackTrace();
+//		}
 	}
 }
