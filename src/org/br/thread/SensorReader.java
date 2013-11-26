@@ -23,12 +23,10 @@ public class SensorReader implements Runnable {
 	public synchronized void run() {
 		int index = 0;
 		String tag_values = ")";
-		
+
 		while (true) {
 			try {
-				Thread.sleep(1000);		
-
-				
+				Thread.sleep(1000);
 
 				final String tag_value = Reader.readSensorFile(tag, index);
 
@@ -40,12 +38,16 @@ public class SensorReader implements Runnable {
 
 				sensorGUI.setValueLabel(tag_value);
 
-				index = index + 1;
-
 				if (index % 5 == 0) {
 					tag_values = "(" + tag_values;
 					service.updateSensorValues(name, tag, tag_values);
 					tag_values = ")";
+				}
+
+				if (index == 300) {
+					index = 0;
+				} else {
+					index = index + 1;
 				}
 
 			} catch (InterruptedException e) {

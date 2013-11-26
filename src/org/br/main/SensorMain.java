@@ -37,10 +37,10 @@ public class SensorMain {
 			Service service = ServiceHelper.narrow(namingContext
 					.resolve(serviceName));
 
-			//String tag = args[0]; // First argument should be the type (T, P, H)
-			//String name = args[1]; // Second argument should be the name
-			String tag = "T";
-			String name = "Sala";
+			String tag = args[0]; // First argument should be the type (T, P, H)
+			String name = args[1]; // Second argument should be the name
+//			String tag = "H";
+//			String name = "Sacada";
 			
 			SensorServant sensorServant = new SensorServant(name, tag, service);
 			

@@ -8,8 +8,6 @@ import org.omg.CORBA.Any;
 
 public class ClientServant extends ClientPOA {
 
-	String name;
-
 	private String firstTag;
 	private String secondTag;
 
@@ -18,14 +16,14 @@ public class ClientServant extends ClientPOA {
 
 	public ClientServant(String name, String firstTag, String secondTag) {
 		super();
-		this.name = name;
+		
 		this.firstTag = firstTag;
 		this.secondTag = secondTag;
 
-		firstGUI = new ClientGUI();
+		firstGUI = new ClientGUI(name, firstTag);
 		firstGUI.setVisible(true);
 		
-		secondGUI = new ClientGUI();
+		secondGUI = new ClientGUI(name, secondTag);
 		secondGUI.setVisible(true);
 
 	}
@@ -48,5 +46,4 @@ public class ClientServant extends ClientPOA {
 
 		return 0;
 	}
-
 }

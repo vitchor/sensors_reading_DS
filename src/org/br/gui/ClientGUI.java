@@ -9,8 +9,6 @@ import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
@@ -26,53 +24,30 @@ public class ClientGUI extends JFrame {
 	private static final long serialVersionUID = 8560706222926619704L;
 	DefaultListModel model = new DefaultListModel();
 	Timer m_timer;
-	int m_interval = 50;
-	int model_index = 0; 
 
-	// ArrayList<String> valueArray;
-
-	public ClientGUI() {
-
-		// valueArray = new ArrayList<String>();
-
+	public ClientGUI(String name, String tag) {
+		super(name + "(" + tag + ")");
 		initComponents();
+		
+		
 	}
 
-	// public synchronized void updateModel(ArrayList<String> model) {
-	//
-	// this.model.clear();
-	//
-	// int index = 0;
-	//
-	// for (String string : model) {
-	// model.add(index, string);
-	// index = index + 1;
-	// }
-	// }
-
 	public synchronized void updateModel(ArrayList<String> valueArray) {
-		// valueArray = model;
 
 		final int modelSize = model.size();
-		final int valueArraySize = valueArray.size(); 
-		
+		final int valueArraySize = valueArray.size();
+
 		final int delta = valueArraySize - modelSize;
-		
+
 		if (delta > 0) {
-			
-			for (int i=0; i<delta; i++) {
-				
+
+			for (int i = 0; i < delta; i++) {
+
 				final String value = valueArray.get(modelSize + i);
-				
+
 				model.add(modelSize + i, value);
 			}
 
-//			int index = 0;
-//
-//			for (String string : valueArray) {
-//				model.add(index, string);
-//				index = index + 1;
-//			}
 		}
 	}
 
@@ -138,8 +113,6 @@ public class ClientGUI extends JFrame {
 		pack();
 		setLocationRelativeTo(getOwner());
 
-		// m_timer = new Timer(m_interval, new TimerAction());
-		// m_timer.start();
 	}
 
 	private JPanel dialogPane;
@@ -147,19 +120,4 @@ public class ClientGUI extends JFrame {
 	private JScrollPane scrollPane1;
 	private JList list1;
 
-	class TimerAction implements ActionListener {
-
-		// ================================================== actionPerformed
-		public synchronized void actionPerformed(ActionEvent e) {
-
-			// model.clear();
-			//
-			// int index = 0;
-			//
-			// for (String string : valueArray) {
-			// model.add(index, string);
-			// index = index + 1;
-			// }
-		}
-	}
 }

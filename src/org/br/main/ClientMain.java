@@ -30,13 +30,13 @@ public class ClientMain {
 					.resolve_initial_references(Names.NAME_SERVICE);
 			NamingContext namingContext = NamingContextHelper.narrow(objRef);
 
-//			String clientName = args[0];
-//			String firstTag = args[1];
-//			String secondTag = args[2];
+			String clientName = args[0];
+			String firstTag = args[1];
+			String secondTag = args[2];
 			
-			String clientName = "CEO";
-			String firstTag = "P";
-			String secondTag = "T";
+//			String clientName = "FUNCIONARIO";
+//			String firstTag = "T";
+//			String secondTag = "H";
 			
 			ClientServant clientServant = new ClientServant(clientName, firstTag, secondTag);
 

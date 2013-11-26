@@ -40,7 +40,7 @@ public class ServiceGUI extends JFrame {
 		clientsLabel = new JLabel("0");
 		container = new Container();
 		container.setLayout(new GridLayout(0, 2));
-		container.add(new JLabel("Clients:"));
+		container.add(new JLabel("Last data:"));
 		container.add(clientsLabel);
 		container.add(new JLabel(""));
 		container.add(new JLabel(""));

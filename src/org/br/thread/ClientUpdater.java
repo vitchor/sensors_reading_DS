@@ -84,7 +84,7 @@ public class ClientUpdater implements Runnable {
 						client.updateTagValues("H", humidityAny);
 					}
 				}
-				
+
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
