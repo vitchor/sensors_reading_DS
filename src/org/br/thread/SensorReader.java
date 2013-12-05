@@ -44,7 +44,7 @@ public class SensorReader implements Runnable {
 					tag_values = ")";
 				}
 
-				if (index == 300) {
+				if (index == 38) {
 					index = 0;
 				} else {
 					index = index + 1;
